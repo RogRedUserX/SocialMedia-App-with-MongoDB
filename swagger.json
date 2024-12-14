@@ -1,0 +1,728 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "description": "This is a social media app where users can post, like, and comment.",
+        "title": "Social Media API"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "jwtToken": {
+                "in": "cookie",
+                "name": "jwtToken",
+                "type": "apiKey"
+            }
+        }
+    },
+    "paths": {
+        "/api/users/signup": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Registration",
+                "description": "User registration",
+                "requestBody": {
+                    "description": "User registration",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully"
+                    }
+                }
+            }
+        },
+        "/api/users/signin": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Login",
+                "description": "User Login",
+                "requestBody": {
+                    "description": "User Credentials",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "get": {
+                "tags": ["User"],
+                "summary": "get user logout",
+                "description": "User can logout",
+                "security": [
+                    {
+                        "jwtCookie": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/users/get-details/{userId}": {
+            "get": {
+                "tags": ["User"],
+                "summary": "get user details",
+                "description": "User can get users details",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The userId to get details"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/users/get-all-details": {
+            "get": {
+                "tags": ["User"],
+                "summary": "get all user details",
+                "description": "User can get all users details",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/users/update-details/{userId}": {
+            "put": {
+                "tags": ["User"],
+                "summary": "update user details",
+                "description": "User can update details",
+                "security": [
+                    {
+                        "jwtCookie": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The userId to update details"
+                    }
+                ],
+                "requestBody": {
+                    "description": "User details update",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description":"unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/posts/": {
+            "post": {
+                "tags": ["Posts"],
+                "summary": "Create New Post",
+                "description": "User can create new post",
+                "security": [
+                    {
+                        "jwtCookie": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "caption": {
+                                        "type": "string"
+                                    },
+                                    "imageUrl": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Posts"],
+                "summary": "Get user Posts",
+                "description": "User should get posts",
+                "security": [
+                    {
+                        "jwtCookie": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/posts/all": {
+            "get": {
+                "tags": ["Posts"],
+                "summary": "get all Posts",
+                "description": "User can get all posts",
+                "security": [
+                    {
+                        "jwtCookie": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/posts/{postId}": {
+            "get": {
+                "tags": ["Posts"],
+                "summary": "Get Posts by id",
+                "description": "User can get posts by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Posts"],
+                "summary": "Update Posts by id",
+                "description": "User can update posts by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the post"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "caption": {
+                                        "type": "string"
+                                    },
+                                    "imageUrl": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Posts"],
+                "summary": "Delete Posts by id",
+                "description": "User can Delete posts by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            } 
+        },
+        "/api/comments/{postId}": {
+            "get": {
+                "tags": ["Comments"],
+                "summary": "Get Comments by id",
+                "description": "User can get Comments by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the Comment"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Comments"],
+                "summary": "create Comments by id of post",
+                "description": "User can create Comments by id of post",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the post"
+                    }
+                ],
+                "requestBody": {
+                    "description": "User should provide content for comment",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully"
+                    }
+                }
+            }
+        },
+        "/api/comments/{commentId}": {
+            "delete": {
+                "tags": ["Comments"],
+                "summary": "Delete Comments by id",
+                "description": "User can Delete Comments by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the Comment"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Comments"],
+                "summary": "Update Comments by id",
+                "description": "User can update Comments by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the Comment"
+                    }
+                ],
+                "requestBody": {
+                    "description": "user should provide content to updated",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/likes/{id}": {
+            "get": {
+                "tags": ["Likes"],
+                "summary": "Get All Likes by id",
+                "description": "User can get All Likes by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the Like"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/likes/toggle/{id}": {
+            "get": {
+                "tags": ["Likes"],
+                "summary": "Like or Remove Like by id",
+                "description": "User can Like and Remove Like by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID to Like for comment or post"
+                    },
+                    {
+                        "name": "type", 
+                        "in": "query",   
+                        "required": true, 
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The type should hold only two values either comment or post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/likes/counts/{id}": {
+            "get": {
+                "tags": ["Likes"],
+                "summary": "get likes count of comments or posts by id",
+                "description": "User can get likes of comments or posts by id",
+                "security": [
+                    {
+                        "jwtCookie": []  
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The ID of the Like"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/otp/send": {
+            "post": {
+                "tags": ["otp"],
+                "summary": "create otp by email",
+                "description": "User can send otp to registered mail",
+                "requestBody": {
+                    "description": "User should provide email for otp to recieve",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description":"Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/otp/verify": {
+            "post": {
+                "tags": ["otp"],
+                "summary": "verify otp by email",
+                "description": "User can verify otp",
+                "requestBody": {
+                    "description": "User can check otp is vaild or not",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "otp": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description":"Bad request"
+                    }
+                }
+            }
+        },
+        "/api/otp/rest-password": {
+            "put": {
+                "tags": ["otp"],
+                "summary": "rest password",
+                "description": "User can rest password",
+                "requestBody": {
+                    "description": "User should provide email, otp, newPassword",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "otp": {
+                                        "type": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description":"Resource not found"
+                    },
+                    "401": {
+                        "description":"unauthorized"
+                    }
+                }
+            }
+        }    
+    } 
+}
